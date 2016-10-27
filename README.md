@@ -14,6 +14,8 @@ You do:
 https://<your_stack_url> <your_stack_username> <your_stack_password>
 ```
 
+* Create a file `passwd` containing the password used to encrypt your backups.
+
 * Issue `docker build -t transip-stack .`
 
 
@@ -23,5 +25,9 @@ To run:
 
 
 Unfortunately, in order to be able to mount a volume in user space in docker, SYS_ADMIN capabilities need to be added to the container. This is part of the run_docker shell script. This shell script is there for convenience reasons only, feel free to change paths etc. ;)
+
+Cron
+
+By default every 24hrs a new backup will be created. Cron takes care of this.
 
 _Please note this is all work in progress..._
