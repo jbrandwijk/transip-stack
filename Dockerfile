@@ -3,29 +3,17 @@ RUN	apt-get update &&\
 	apt-get dist-upgrade -y 
 RUN	DEBIAN_FRONTEND=noninteractive \
 	apt-get install \
-		build-essential \
 		ca-certificates \
-                cmake \
                 cron \
                 davfs2 \
+		duplicity \
                 fuse \
-                liblzma-dev \
-                liblzo2-dev \
-                libprotobuf-dev \
-                libssl-dev \
                 protobuf-compiler \
                 rsync \
                 vim.tiny \
                 wget \
-                zlib1g-dev \
 			-q -y --no-install-recommends
 
-RUN	wget https://github.com/zbackup/zbackup/archive/1.4.4.tar.gz &&\
-	tar xzvf 1.4.4.tar.gz &&\
-	cd zbackup-1.4.4 &&\
-	cmake . &&\
-	make &&\
-	make install
 
 COPY	secrets /etc/davfs2/secrets
 RUN	chmod 0600 /etc/davfs2/secrets
