@@ -11,7 +11,7 @@ In order to get this up and running, a couple of actions need to be done:
 
 Check out this repository with your favourite GIT client.
 
-*** Set up Slack ***
+***Set up Slack***
 
 Locate the file `davfshost` and replace the contents of the file with the WebDav URL of *your* stack. This is typically something like `http://<username>.stackstorage.com/webdav.php/remote`.
 
@@ -22,15 +22,15 @@ Next, locate the file `confidential/secrets`. This file contains one line in fol
 
 so this needs to be filled in with your data.
 
-*** Set up passphrase ***
+***Set up passphrase***
 
 This passphrase is being used to encrypt (or decrypt) your backups. Place your passphrase in `confidential/passwd`.
 
-*** Build your container ***
+***Build your container***
 
 Build the container conform the Doc ker documentation. This is typically something like `docker build -t transip-stack .`
 
-*** Run your contanier ***
+***Run your contanier***
 
 That's unfortunately less simple than usual, since the container mounts the remote davFs-volume in order to get your backup at your Stack. To keep things simple these have been put into a single script. So just run: `. run_docker.sh <container-name>`
 
@@ -40,8 +40,8 @@ In the typical setup, the container fires up cron in order to send a backup ever
 
 All scripts being executed (automatically) by this container are located in `/backup-scripts`. Here you'll find:
 
-| Filename      | Are           |
-| ------------- |:-------------:|
+| Filename      |              |
+| ------------- | ------------- |
 | backup.sh     | Used to create a new or incremental backup |
 | entrypoint.sh      | Script fired as entrypoint for the container      |
 | mount-idempotent.sh | Script to mount the remote DavFs, idempotentally. |
