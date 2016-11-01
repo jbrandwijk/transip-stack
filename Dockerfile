@@ -1,4 +1,6 @@
 FROM	debian
+
+#	Install and update packages
 RUN	apt-get update &&\
 	apt-get dist-upgrade -y 
 RUN	DEBIAN_FRONTEND=noninteractive \
@@ -14,20 +16,22 @@ RUN	DEBIAN_FRONTEND=noninteractive \
                 wget \
 			-q -y --no-install-recommends
 
+#	Setup Webdav mount
+COPY	./davfshost /tmp/davfshost
+RUN	DAV=`cat /tmp/davfshost |  awk {'print $1'} `; echo "$DAV /mnt/davfs davfs noauto,user,rw 0 0" >> /etc/fstab
+RUN	mkdir /mnt/davfs
 
-COPY	secrets /etc/davfs2/secrets
-RUN	chmod 0600 /etc/davfs2/secrets
-RUN	DAV=`cat /etc/davfs2/secrets |  awk {'print $1'} `; echo "$DAV /mnt/davfs davfs noauto,user,rw 0 0" >> /etc/fstab
-RUN	mkdir /mnt/davfs && mkdir /backup-scripts
-
+#	Setup location for backup scripts and copy them
+RUN	mkdir /backup-scripts
 COPY	backup-scripts/* /backup-scripts/
 RUN	chmod 700 /backup-scripts/*.sh
-COPY	passwd /root/passwd
 
+#	Setup CRON
 RUN	rm /etc/cron.daily/* &&\
 	ln -s /backup-scripts/backup.sh /etc/cron.daily/
 
+#	Mounts
+VOLUME	["/mnt/local", "/confidential"]
 
-VOLUME	/mnt/local
-
+#	When container starts, run entrypoint.sh
 CMD	/backup-scripts/entrypoint.sh
